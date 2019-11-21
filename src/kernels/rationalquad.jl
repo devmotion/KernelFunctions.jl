@@ -17,12 +17,12 @@ end
 
 function RationalQuadraticKernel(ρ::T₁=1.0,α::T₂=2.0) where {T₁<:Real,T₂<:Real}
     @check_args(RationalQuadraticKernel, α, α > zero(T₂), "α > 1")
-    RationalQuadraticKernel{T₁,ScaleTransform{Base.RefValue{T₁}},T₂}(ScaleTransform(ρ),α)
+    RationalQuadraticKernel{T₁,ScaleTransform{T₁},T₂}(ScaleTransform(ρ),α)
 end
 
-function RationalQuadraticKernel(ρ::A,α::T=2.0) where {A<:AbstractVector{<:Real},T<:Real}
-    @check_args(RationalQuadraticKernel, α, α > zero(T), "α > 1")
-    RationalQuadraticKernel{eltype(A),ScaleTransform{A},T}(ScaleTransform(ρ),α)
+function RationalQuadraticKernel(ρ::AbstractVector{T₁},α::T₂=2.0) where {T₁<:Real,T₂<:Real}
+    @check_args(RationalQuadraticKernel, α, α > zero(T₂), "α > 1")
+    RationalQuadraticKernel{T₁,ARDTransform{T₁,length(ρ)},T₂}(ARDTransform(ρ),α)
 end
 
 function RationalQuadraticKernel(t::Tr,α::T=2.0) where {Tr<:Transform,T<:Real}
@@ -56,13 +56,13 @@ end
 function GammaRationalQuadraticKernel(ρ::T₁=1.0,α::T₂=2.0,γ::T₃=2.0) where {T₁<:Real,T₂<:Real,T₃<:Real}
     @check_args(GammaRationalQuadraticKernel, α, α > one(T₂), "α > 1")
     @check_args(GammaRationalQuadraticKernel, γ, γ >= one(T₂), "γ >= 1")
-    GammaRationalQuadraticKernel{T₁,ScaleTransform{Base.RefValue{T₁}},T₂,T₃}(ScaleTransform(ρ),α,γ)
+    GammaRationalQuadraticKernel{T₁,ScaleTransform{T₁},T₂,T₃}(ScaleTransform(ρ),α,γ)
 end
 
-function GammaRationalQuadraticKernel(ρ::A,α::T₁=2.0,γ::T₂=2.0) where {A<:AbstractVector{<:Real},T₁<:Real,T₂<:Real}
-    @check_args(GammaRationalQuadraticKernel, α, α > one(T₁), "α > 1")
-    @check_args(GammaRationalQuadraticKernel, γ, γ >= one(T₂), "γ >= 1")
-    GammaRationalQuadraticKernel{eltype(A),ScaleTransform{A},T₁,T₂}(ScaleTransform(ρ),α,γ)
+function GammaRationalQuadraticKernel(ρ::AbstractVector{T₁},α::T₂=2.0,γ::T₃=2.0) where {T₁<:Real,T₂<:Real,T₃<:Real}
+    @check_args(GammaRationalQuadraticKernel, α, α > one(T₂), "α > 1")
+    @check_args(GammaRationalQuadraticKernel, γ, γ >= one(T₃), "γ >= 1")
+    GammaRationalQuadraticKernel{T₁,ARDTransform{T₁,length(ρ)},T₂,T₃}(ARDTransform(ρ),α,γ)
 end
 
 function GammaRationalQuadraticKernel(t::Tr,α::T₁=2.0,γ::T₂=2.0) where {Tr<:Transform,T₁<:Real,T₂<:Real}

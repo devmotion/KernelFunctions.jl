@@ -23,8 +23,8 @@ end
 ## Constructors for kernels without parameters
 for kernel in [:ExponentialKernel,:SqExponentialKernel,:Matern32Kernel,:Matern52Kernel,:ExponentiatedKernel]
     @eval begin
-        $kernel(ρ::T=1.0) where {T<:Real} =   $kernel{T,ScaleTransform{Base.RefValue{T}}}(ScaleTransform(ρ))
-        $kernel(ρ::A) where {A<:AbstractVector{<:Real}} = $kernel{eltype(A),ScaleTransform{A}}(ScaleTransform(ρ))
+        $kernel(ρ::T=1.0) where {T<:Real} = $kernel{T,ScaleTransform{T}}(ScaleTransform(ρ))
+        $kernel(ρ::AbstractVector{T}) where {T<:Real} = $kernel{T,ARDTransform{T,length(ρ)}}(ARDTransform(ρ))
         $kernel(t::Tr) where {Tr<:Transform} = $kernel{eltype(t),Tr}(t)
     end
 end
