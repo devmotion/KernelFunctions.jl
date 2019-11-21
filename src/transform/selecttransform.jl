@@ -35,7 +35,7 @@ end
 
 function transform(t::SelectTransform,x::AbstractVector{<:Real},obsdim::Int=defaultobs) #TODO Add test
     @assert maximum(t) <= length(x) "The highest index $(maximum(t)) is higher then the vector length : $(length(x))"
-    return @inbounds x[t.select]
+    return @inbounds view(x,t.select)
 end
 
-_transform(t::SelectTransform,X::AbstractMatrix{<:Real},obsdim::Int=defaultobs) = obsdim == 2 ? X[t.select,:] : X[:,t.select]
+_transform(t::SelectTransform,X::AbstractMatrix{<:Real},obsdim::Int=defaultobs) = obsdim == 2 ? view(X,t.select,:) : view(X,:,t.select)
