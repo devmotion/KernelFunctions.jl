@@ -31,6 +31,7 @@ function RationalQuadraticKernel(t::Tr,α::T=2.0) where {Tr<:Transform,T<:Real}
 end
 
 params(k::RationalQuadraticKernel) = (params(transform(k)),k.α)
+opt_params(k::RationalQuadraticKernel) = (opt_params(transform(k)),k.α)
 
 @inline kappa(κ::RationalQuadraticKernel, d²::T) where {T<:Real} = (one(T)+d²/κ.α)^(-κ.α)
 
@@ -72,5 +73,6 @@ function GammaRationalQuadraticKernel(t::Tr,α::T₁=2.0,γ::T₂=2.0) where {Tr
 end
 
 params(k::GammaRationalQuadraticKernel) = (params(k.transform),k.α,k.γ)
+opt_params(k::GammaRationalQuadraticKernel) = (opt_params(k.transform),k.α,k.γ)
 
 @inline kappa(κ::GammaRationalQuadraticKernel, d²::T) where {T<:Real} = (one(T)+d²^κ.γ/κ.α)^(-κ.α)

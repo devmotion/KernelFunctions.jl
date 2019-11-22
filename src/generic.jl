@@ -30,7 +30,9 @@ for kernel in [:ExponentialKernel,:SqExponentialKernel,:Matern32Kernel,:Matern52
 end
 
 function set_params!(k::Kernel,x)
-    @error "Setting parameters to this kernel is either not possible or has not been implemented"
+    set!(k.transform,first(x))
 end
 
+
 params(k::Kernel) = (params(k.transform),)
+opt_params(k::Kernel) = (opt_params(k.transform),)

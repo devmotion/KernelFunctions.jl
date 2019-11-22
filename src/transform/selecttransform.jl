@@ -21,9 +21,9 @@ function SelectTransform(dims::V) where {V<:AbstractVector{T} where  {T<:Int}}
 end
 
 set!(t::SelectTransform{<:AbstractVector{T}},dims::AbstractVector{T}) where {T<:Int} = t.select .= dims
-set_params!(k::Kernel{T,<:SelectTransform{Td}},dims::AbstractVector{Td}) where {T,Td<:Int} = set!(k.transform,dims)
 
 params(t::SelectTransform) = t.select
+opt_params(t::SelectTransform) = nothing
 
 Base.maximum(t::SelectTransform) = maximum(t.select)
 

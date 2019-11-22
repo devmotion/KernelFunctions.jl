@@ -61,6 +61,7 @@ struct GammaExponentialKernel{T,Tr,Tᵧ<:Real} <: Kernel{T,Tr}
 end
 
 params(k::GammaExponentialKernel) = (params(transform),γ)
+opt_params(k::GammaExponentialKernel) = (opt_params(transform),γ)
 
 function GammaExponentialKernel(ρ::T₁=1.0,gamma::T₂=2.0) where {T₁<:Real,T₂<:Real}
     @check_args(GammaExponentialKernel, gamma, gamma >= zero(T₂), "gamma > 0")

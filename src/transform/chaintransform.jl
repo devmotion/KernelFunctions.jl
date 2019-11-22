@@ -30,7 +30,7 @@ function transform(t::ChainTransform,X::T,obsdim::Int=defaultobs) where {T}
     return Xtr
 end
 
-set_params!(t::ChainTransform,θ) = set_params!.(t.transforms,θ)
+set!(t::ChainTransform,θ) = set!.(t.transforms,θ)
 params(t::ChainTransform) = (params.(t.transforms))
 opt_params(t::ChainTransform) = (opt_params.(t.transforms))
 
