@@ -42,6 +42,6 @@ include("kernels/kernelsum.jl")
 include("kernels/kernelproduct.jl")
 
 include("generic.jl")
-
+include("squeeze.jl")
 
 end
