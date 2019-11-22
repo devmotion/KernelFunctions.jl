@@ -7,12 +7,12 @@ Scale Transform
 Multiply every element of the input by `l`
 """
 struct ScaleTransform{T<:Real} <: Transform
-    s::SArray{Tuple{1},T,1,1}
+    s::Vector{T}
 end
 
 function ScaleTransform(s::T=1.0) where {T<:Real}
     @check_args(ScaleTransform, s, s > zero(T), "s > 0")
-    ScaleTransform{T}(SVector(s))
+    ScaleTransform{T}([s])
 end
 
 set!(t::ScaleTransform,ρ::Real) = t.s .= [ρ]

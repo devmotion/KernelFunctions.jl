@@ -7,17 +7,17 @@ ARD Transform
 Multiply every vector of observation by `v` element-wise
 """
 struct ARDTransform{T,N} <: Transform
-    v::SArray{Tuple{N},T,1,N}
+    v::Vector{T}
 end
 
 function ARDTransform(s::T,dims::Integer) where {T<:Real}
     @check_args(ARDTransform, s, s > zero(T), "s > 0")
-    ARDTransform{T,dims}(SVector{dims}(fill(s,dims)))
+    ARDTransform{T,dims}(fill(s,dims))
 end
 
 function ARDTransform(v::AbstractVector{T}) where {T<:Real}
     @check_args(ARDTransform, v, all(v.>zero(T)), "v > 0")
-    ARDTransform{T,length(v)}(SVector{length(v)}(v))
+    ARDTransform{T,length(v)}(v)
 end
 
 function set!(t::ARDTransform{T},ρ::AbstractVector{T}) where {T<:Real}
