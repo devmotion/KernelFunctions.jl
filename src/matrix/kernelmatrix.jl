@@ -72,10 +72,20 @@ end
 
 function kernelmatrix(
         κ::Kernel,
-        X::AbstractMatrix;
+        X::AbstractMatrix{<:Real};
         obsdim::Int = defaultobs
     )
+    @assert obsdim ∈ [1,2] "obsdim should be 1 or 2 (see docs of `kernelmatrix`))"
     K = map(x->kappa(κ,x),pairwise(metric(κ),transform(κ,X,obsdim),dims=obsdim))
+end
+
+function kernelmatrix(
+        κ::Kernel,
+        X::AbstractVector{<:Real},
+        Y::AbstractVector{<:Real};
+        obsdim::Int=defaultobs
+    )
+    kernelmatrix(κ,reshape(X,1,:),reshape(Y,1,:),obsdim=2)
 end
 
 function kernelmatrix(
@@ -84,7 +94,7 @@ function kernelmatrix(
         Y::AbstractMatrix;
         obsdim=defaultobs
     )
-    @assert obsdim ∈ [1,2] "obsdim should be 1 or 2 (see docs of kernelmatrix))"
+    @assert obsdim ∈ [1,2] "obsdim should be 1 or 2 (see docs of `kernelmatrix`))"
     if !check_dims(X,Y,feature_dim(obsdim),obsdim)
         throw(DimensionMismatch("X $(size(X)) and Y $(size(Y)) do not have the same number of features on the dimension : $(feature_dim(obsdim))"))
     end
