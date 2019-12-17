@@ -64,19 +64,22 @@ kernelmatrix
 
 function kernelmatrix(
         κ::Kernel,
-        X::AbstractVector{<:Real};
-        obsdim::Int=defaultobs
-        )
-        kernelmatrix(κ,reshape(X,1,:),obsdim=2)
+        X::AbstractVector{<:Real})
+    kernelmatrix(κ,reshape(X,1,:),obsdim=2)
 end
 
 function kernelmatrix(
         κ::Kernel,
         X::AbstractMatrix{<:Real};
-        obsdim::Int = defaultobs
-    )
+        obsdim::Int = defaultobs )
     @assert obsdim ∈ [1,2] "obsdim should be 1 or 2 (see docs of `kernelmatrix`))"
     K = map(x->kappa(κ,x),pairwise(metric(κ),transform(κ,X,obsdim),dims=obsdim))
+end
+
+function kernelmatrix(
+        κ::Kernel,
+        X::AbstractVector)
+    K = map(x->kappa(κ,x),pairwise(metric(κ),reshape(transform(κ,X,obsdim),1,:),dims=2))
 end
 
 function kernelmatrix(
@@ -105,7 +108,7 @@ end
 
 """
 ```
-    kerneldiagmatrix(κ::Kernel, X::Matrix; obsdim::Int=2)
+    kerneldiagmatrix(κ::Kernel, X::MatrixorVec; obsdim::Int=2)
 ```
 Calculate the diagonal matrix of `X` with respect to kernel `κ`
 `obsdim=1` means the matrix `X` has size #samples x #dimension
@@ -122,6 +125,14 @@ function kerneldiagmatrix(
         elseif obsdim == 2
             [@views _kernel(κ,X[:,i],X[:,i]) for i in 1:size(X,obsdim)]
         end
+end
+
+function kerneldiagmatrix(
+        κ::Kernel,
+        X::AbstractVector{<:Real};
+        obsdim::Int = defaultobs
+        )
+        kerneldiagmatrix(κ,reshape(X,1,:),obsdim=2)
 end
 
 """
